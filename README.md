@@ -8,6 +8,8 @@
 
 **Backend_ClinicManagement** is a backend project developed with .NET 8 that provides a robust API for managing clinic operations. The project uses a Clean Architecture approach, ensuring separation of concerns and scalability. It is configured to work with PostgreSQL for data persistence.
 
+#### To access ClinicManagement front-end: https://github.com/AugustoOmena/WebApp_ClinicManagement
+
 ## Features
 
 - **Layered Architecture**: Clear separation of concerns between layers (e.g., Presentation, Business, Data Access).
