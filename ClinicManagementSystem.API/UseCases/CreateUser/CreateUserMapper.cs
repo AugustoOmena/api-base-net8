@@ -1,5 +1,6 @@
 using AutoMapper;
 using ClinicManagementSystem.Domain.Entities;
+using ClinicManagementSystem.Domain.Validators.Requests;
 
 namespace ClinicManagementSystem.API.UseCases.CreateUser;
 

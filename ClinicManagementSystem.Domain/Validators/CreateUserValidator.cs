@@ -1,6 +1,6 @@
 using FluentValidation;
 
-namespace ClinicManagementSystem.API.UseCases.CreateUser;
+
 
 public sealed class CreateUserValidator : AbstractValidator<CreateUserRequest>
 {

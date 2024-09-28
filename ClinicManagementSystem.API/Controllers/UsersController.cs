@@ -1,34 +1,28 @@
+using ClinicManagementSystem.Api.Config;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
-using ClinicManagementSystem.API.UseCases.CreateUser;
+using ClinicManagementSystem.Domain.Commands.UserClient;
+using ClinicManagementSystem.Shared.Notifications;
 
-namespace ClinicManagementSystem.API.Controllers
+namespace ClinicManagementSystem.API.Controllers;
+
+[Route("api/[controller]")]
+[ApiController]
+public class UsersController : BaseApiController
 {
-    [Route("api/[controller]")]
-    [ApiController]
-    public class UsersController : ControllerBase
+    private readonly IMediator _mediator;
+
+    public UsersController(IMediator mediator, IDomainNotification notifications) : base(notifications, mediator)
     {
-        private readonly IMediator _mediator;
+        _mediator = mediator;
+    }
 
-        public UsersController(IMediator mediator)
-        {
-            _mediator = mediator;
-        }
-
-        [HttpPost]
-        public async Task<ActionResult<CreateUserResponse>> Create(CreateUserRequest request,
-            CancellationToken cancellationToken)
-        {
-            var validator = new CreateUserValidator();
-            var validationResult = await validator.ValidateAsync(request);
-
-            if (!validationResult.IsValid)
-            {
-                return BadRequest(validationResult.Errors);
-            }
-            
-            var response = await _mediator.Send(request, cancellationToken);
-            return Ok(response);
-        }
+    [HttpPost]
+    [Route("/v1/Create")]
+    public async Task<IActionResult> Create(CreateClientUserByClinicManagementSystemCommand command,
+        CancellationToken cancellationToken)
+    {
+        return CreateResponse(await _mediator.Send(command, CancellationToken.None));
     }
 }
+
