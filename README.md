@@ -1,5 +1,4 @@
-<h1 align="center">Base-API-Layered-Architecture</h1>
-
+<h1 align="center">Backend ClinicManagement</h1>
 
 <p align="center">
   <img src="https://img.shields.io/badge/.NET-8.0-blue" alt=".NET">
@@ -7,10 +6,9 @@
   <img src="https://img.shields.io/badge/Architecture-Layered-orange" alt="Architecture">
 </p>
 
+**Backend_ClinicManagement** is a backend project developed with .NET 8 that provides a robust API for managing clinic operations. The project uses a Clean Architecture approach, ensuring separation of concerns and scalability. It is configured to work with PostgreSQL for data persistence.
 
-## Overview
-
-**Base-API-Layered-Architecture** is a foundational project for creating other APIs, providing a pre-configured layered architecture using .NET and PostgreSQL. This repository is designed to offer a scalable and maintainable structure to start building APIs quickly and efficiently.
+#### To access ClinicManagement front-end: https://github.com/AugustoOmena/WebApp_ClinicManagement
 
 ## Features
 
@@ -38,7 +36,7 @@
 ## Prerequisites
 
 - [.NET SDK 8.0](https://dotnet.microsoft.com/download)
-- [PostgreSQL](https://www.postgresql.org/download/)
+- [PostgreSQL 16](https://www.postgresql.org/download/)
 - [Entity Framework Core](https://docs.microsoft.com/en-us/ef/core/)
 
 ## Setup
@@ -46,8 +44,8 @@
 1. Clone the repository:
 
    ```bash
-   git clone https://github.com/yourusername/Base-API-Layered-Architecture.git
-   cd Base-API-Layered-Architecture
+   git https://github.com/AugustoOmena/Backend_ClinicManagement.git
+   cd Backend_ClinicManagement
 
 2. Atualize o `appsettings.json` com sua string de conexão do PostgreSQL:
 
@@ -60,7 +58,14 @@
 
         dotnet ef database update
 
-
 4. Inicie a API:
    
        dotnet run
+
+## Contact
+
+For inquiries or support, please contact me through the following channels:
+
+- **Email**: augusto.n.omena@gmail.com
+- **LinkedIn**: [august-omena](https://www.linkedin.com/in/augusto-omena/)
+
