@@ -1,20 +1,23 @@
+using ClinicManagementSystem.Domain.CommandHandler;
 using ClinicManagementSystem.Domain.Commands.UserClient;
 using ClinicManagementSystem.Domain.Contracts.Repositories;
 using ClinicManagementSystem.Domain.Entities;
 using ClinicManagementSystem.Domain.Results.UserClient;
 using ClinicManagementSystem.Domain.Validators;
+using ClinicManagementSystem.Shared.Notifications;
+using ClinicManagementSystem.Shared.Persistence;
 using MediatR;
 using Microsoft.AspNetCore.Http.HttpResults;
 
-namespace ClinicManagementSystem.Domain.CommandHandler.ClientUser;
+namespace ClinicManagementSystem.Domain.CommandHandler;
 
-public class ClientUserCommandHandler :
+public class ClientUserCommandHandler : BaseCommandHandler,
     IRequestHandler<CreateClientUserByClinicManagementSystemCommand, BaseClientUserResult>
 {
 
     private readonly IUserRepository _userRepository;
     
-    public ClientUserCommandHandler(IUserRepository userRepository)
+    public ClientUserCommandHandler(IUnitOfWork uow, IDomainNotification notifications, IUserRepository userRepository) : base(uow, notifications)
     {
 
         _userRepository = userRepository;
@@ -42,6 +45,11 @@ public class ClientUserCommandHandler :
 
         await _userRepository.AddUserAsync(newUser);
         
+        if (!await CommitAsync())
+        {
+            Notifications.Handle("CommonMessages.ProblemSavindDataFriendly");
+            return response;
+        }
 
         response.Success = true;
         return response;
