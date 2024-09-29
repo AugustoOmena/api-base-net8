@@ -1,18 +1,24 @@
 using System.Text;
 using ClinicManagementSystem.API.Services;
 using ClinicManagementSystem.API.Services.Contracts;
+using ClinicManagementSystem.Data.Repositories;
+using ClinicManagementSystem.Data.Utils;
 using ClinicManagementSystem.Domain.Commands.UserClient;
+using ClinicManagementSystem.Domain.Contracts.Repositories;
 using ClinicManagementSystem.Shared.Notifications;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 
-
 var builder = WebApplication.CreateBuilder(args);
+
+builder.Services.AddDbContext<DataContext>(options =>
+    options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
 
 builder.Services.AddScoped<IJwtService, JwtService>();
 builder.Services.AddScoped<IDomainNotification, DomainNotification>();
-//builder.Services.AddScoped<IUserRepository, UserRepository>();
+builder.Services.AddScoped<IUserRepository, UserRepository>();
 
 builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssemblyContaining<CreateClientUserByClinicManagementSystemCommand>());
 
@@ -79,8 +85,8 @@ app.UseCors(options => options.WithOrigins("http://localhost:4200").AllowAnyHead
 
 app.UseHttpsRedirection();
 
-app.UseAuthentication();  // Middleware de autenticação
-app.UseAuthorization();   // Middleware de autorização
+app.UseAuthentication();
+app.UseAuthorization();
 
 app.MapControllers();
 
