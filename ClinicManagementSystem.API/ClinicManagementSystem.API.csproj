@@ -22,17 +22,7 @@
     </ItemGroup>
 
     <ItemGroup>
-      <Folder Include="Config\" />
-      <Folder Include="Shared\Behavior\" />
-      <Folder Include="Shared\Exceptions\" />
-      <Folder Include="UseCases\DeleteUser\" />
-      <Folder Include="UseCases\GetAllUser\" />
-      <Folder Include="UseCases\UpdateUser\" />
-    </ItemGroup>
-
-    <ItemGroup>
       <ProjectReference Include="..\ClinicManagementSystem.Api.Config\ClinicManagementSystem.Api.Config.csproj" />
-      <ProjectReference Include="..\ClinicManagementSystem.Application\ClinicManagementSystem.Application.csproj" />
       <ProjectReference Include="..\ClinicManagementSystem.Data\ClinicManagementSystem.Data.csproj" />
       <ProjectReference Include="..\ClinicManagementSystem.Domain\ClinicManagementSystem.Domain.csproj" />
       <ProjectReference Include="..\ClinicManagementSystem.Persistence\ClinicManagementSystem.Persistence.csproj" />
