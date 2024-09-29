@@ -1,26 +1,29 @@
-using ClinicManagementSystem.Domain.CommandHandler;
+using ClinicManagementSystem.Domain.Commands.Auth;
 using ClinicManagementSystem.Domain.Commands.UserClient;
 using ClinicManagementSystem.Domain.Contracts.Repositories;
 using ClinicManagementSystem.Domain.Entities;
+using ClinicManagementSystem.Domain.Results.Auth;
 using ClinicManagementSystem.Domain.Results.UserClient;
+using ClinicManagementSystem.Domain.Services.Contracts;
 using ClinicManagementSystem.Domain.Validators;
 using ClinicManagementSystem.Shared.Notifications;
 using ClinicManagementSystem.Shared.Persistence;
 using MediatR;
-using Microsoft.AspNetCore.Http.HttpResults;
 
 namespace ClinicManagementSystem.Domain.CommandHandler;
 
 public class ClientUserCommandHandler : BaseCommandHandler,
-    IRequestHandler<CreateClientUserByClinicManagementSystemCommand, BaseClientUserResult>
+    IRequestHandler<CreateClientUserByClinicManagementSystemCommand, BaseClientUserResult>,
+    IRequestHandler<AuthorizeUserCommand, AuthorizeUserResult>
 {
 
     private readonly IUserRepository _userRepository;
+    private readonly IJwtService _jwtService;
     
-    public ClientUserCommandHandler(IUnitOfWork uow, IDomainNotification notifications, IUserRepository userRepository) : base(uow, notifications)
+    public ClientUserCommandHandler(IUnitOfWork uow, IDomainNotification notifications, IUserRepository userRepository, IJwtService jwtService) : base(uow, notifications)
     {
-
         _userRepository = userRepository;
+        _jwtService = jwtService;
     }
 
     public async Task<BaseClientUserResult> Handle(CreateClientUserByClinicManagementSystemCommand request, CancellationToken cancellationToken)
@@ -53,5 +56,30 @@ public class ClientUserCommandHandler : BaseCommandHandler,
 
         response.Success = true;
         return response;
+    }
+
+    public async Task<AuthorizeUserResult> Handle(AuthorizeUserCommand command, CancellationToken cancellationToken)
+    {
+        var response = new AuthorizeUserResult();
+        
+        var validator = new AuthUserValidator();
+        var validationResult = await validator.ValidateAsync(command);
+        
+        if (!validationResult.IsValid)
+        {
+            response.Success = false;
+            return response;
+        }
+
+        var user = await _userRepository.FindAsync(x => x.Email.ToLower() == command.Email.ToLower() && x.Password == command.Password);
+
+        if (user is not null)
+        {
+            response.AccessToken = _jwtService.GenerateToken(user);
+            response.Success = true;
+            return (response);
+        }
+        
+        throw new NotImplementedException();
     }
 }

@@ -1,13 +1,16 @@
 using System.Text;
-using ClinicManagementSystem.API.Services;
-using ClinicManagementSystem.API.Services.Contracts;
+
 using ClinicManagementSystem.Data;
 using ClinicManagementSystem.Data.Repositories;
 using ClinicManagementSystem.Data.Utils;
+using ClinicManagementSystem.Domain.Commands.Auth;
 using ClinicManagementSystem.Domain.Commands.UserClient;
 using ClinicManagementSystem.Domain.Contracts.Repositories;
+using ClinicManagementSystem.Domain.Services;
+using ClinicManagementSystem.Domain.Services.Contracts;
 using ClinicManagementSystem.Shared.Notifications;
 using ClinicManagementSystem.Shared.Persistence;
+
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
@@ -25,6 +28,8 @@ builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 
 
 builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssemblyContaining<CreateClientUserByClinicManagementSystemCommand>());
+builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssemblyContaining<AuthorizeUserCommand>());
+
 
 builder.Services.AddAuthentication(options =>
 {

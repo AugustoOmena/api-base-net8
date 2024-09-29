@@ -1,11 +1,12 @@
+using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
-using ClinicManagementSystem.API.Services.Contracts;
 using ClinicManagementSystem.Domain.Entities;
-using System.IdentityModel.Tokens.Jwt;
+using ClinicManagementSystem.Domain.Services.Contracts;
+using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 
-namespace ClinicManagementSystem.API.Services;
+namespace ClinicManagementSystem.Domain.Services;
 
 public class JwtService : IJwtService
 {

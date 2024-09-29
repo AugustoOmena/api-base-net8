@@ -1,57 +1,28 @@
-using ClinicManagementSystem.API.Services.Contracts;
+using ClinicManagementSystem.Api.Config;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
-using ClinicManagementSystem.API.UseCases.Login;
-using ClinicManagementSystem.Persistence.Context;
+using ClinicManagementSystem.Domain.Commands.Auth;
+using ClinicManagementSystem.Shared.Notifications;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.EntityFrameworkCore;
 
 namespace ClinicManagementSystem.API.Controllers;
 
 [Route("api/connect")]
 [ApiController]
-public class UsersAuthController : ControllerBase
+public class UsersAuthController : BaseApiController
 {
     private readonly IMediator _mediator;
-    private readonly IJwtService _jwtService;
-    private readonly AppDbContext _context;
 
-    public UsersAuthController(IMediator mediator, IJwtService jwtService, AppDbContext context)
+    public UsersAuthController(IMediator mediator, IDomainNotification notifications) : base(notifications, mediator)
     {
         _mediator = mediator;
-        _jwtService = jwtService;
-        _context = context;
     }
     
     [HttpPost("token")]
     [AllowAnonymous]
-    public async Task<IActionResult> Login([FromBody] LoginUserRequest command,
+    public async Task<IActionResult> Login(AuthorizeUserCommand command,
         CancellationToken cancellationToken)
     {
-        var validator = new LoginUserValidator();
-        var validationResult = await validator.ValidateAsync(command);
-
-        if (!validationResult.IsValid)
-        {
-            return BadRequest(validationResult.Errors);
-        }
-        
-        var user = await _context.Users.FirstOrDefaultAsync(u => u.Email == command.Email && u.Password == command.Password);
-
-        if (user is not null)
-        {
-            return Ok(new
-            {
-                accessToken = _jwtService.GenerateToken(user),
-                userInfo = new
-                {
-                    user.Id,
-                    user.Name,
-                    user.Email
-                },
-            });
-        }
-        //var response = await _mediator.Send(command, cancellationToken);
-        return NotFound("Usuário não encontrado.");
+        return CreateResponse(await _mediator.Send(command, cancellationToken));
     }
 }

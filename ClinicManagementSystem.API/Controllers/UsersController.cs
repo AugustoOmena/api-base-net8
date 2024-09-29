@@ -3,11 +3,13 @@ using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using ClinicManagementSystem.Domain.Commands.UserClient;
 using ClinicManagementSystem.Shared.Notifications;
+using Microsoft.AspNetCore.Authorization;
 
 namespace ClinicManagementSystem.API.Controllers;
 
 [Route("api/[controller]")]
 [ApiController]
+[Authorize]
 public class UsersController : BaseApiController
 {
     private readonly IMediator _mediator;
@@ -18,7 +20,7 @@ public class UsersController : BaseApiController
     }
 
     [HttpPost]
-    [Route("/v1/Create")]
+    [Route("v1/Create")]
     public async Task<IActionResult> Create(CreateClientUserByClinicManagementSystemCommand command,
         CancellationToken cancellationToken)
     {

@@ -1,6 +1,6 @@
 using ClinicManagementSystem.Domain.Entities;
 
-namespace ClinicManagementSystem.API.Services.Contracts;
+namespace ClinicManagementSystem.Domain.Services.Contracts;
 
 public interface IJwtService
 {
