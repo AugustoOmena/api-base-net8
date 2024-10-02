@@ -1,4 +1,4 @@
-<h1 align="center">Backend ClinicManagement</h1>
+<h1 align="center">api-base-net8</h1>
 
 <p align="center">
   <img src="https://img.shields.io/badge/.NET-8.0-blue" alt=".NET">
@@ -6,32 +6,16 @@
   <img src="https://img.shields.io/badge/Architecture-Layered-orange" alt="Architecture">
 </p>
 
-**Backend_ClinicManagement** is a backend project developed with .NET 8 that provides a robust API for managing clinic operations. The project uses a Clean Architecture approach, ensuring separation of concerns and scalability. It is configured to work with PostgreSQL for data persistence.
-
-#### To access ClinicManagement front-end: https://github.com/AugustoOmena/WebApp_ClinicManagement
+This project serves as a template for .NET 8 APIs, following Clean Architecture principles. It comes with a basic authentication and authorization system already in place, providing a robust and scalable structure for developing secure and high-quality APIs. Ideal for projects that require a strong foundation with best practices in design and security.
 
 ## Features
 
-- **Layered Architecture**: Clear separation of concerns between layers (e.g., Presentation, Business, Data Access).
+- **Layered Architecture**: Clear separation of concerns between layers.
 - **.NET 8.0**: Latest .NET version with performance improvements.
 - **PostgreSQL**: Pre-configured integration with PostgreSQL database.
 - **Extensible**: Easy to extend and adapt for various types of APIs.
 - **Best Practices**: Implements good coding practices like dependency injection and repository pattern.
 
-## Technologies Used
-
-- **.NET 8.0**
-- **PostgreSQL**
-- **Entity Framework Core**
-- **Dependency Injection**
-- **Repository Pattern**
-
-## Layers
-
-1. **Api Layer**: Responsible for handling incoming HTTP requests and routing them to the appropriate services. This layer defines the API endpoints and coordinates responses.
-2. **Core Layer**: Contains the business logic, validation, and core functionalities of the application. It manages the interaction between the API and infrastructure layers.
-3. **Infra Layer**: Responsible for data persistence and retrieval. This layer implements data access using Entity Framework Core and manages integration with the PostgreSQL database.
-4. **Test Layer**: Includes unit and integration tests to ensure the application’s reliability. It covers testing of business logic, API endpoints, and data access components.
 
 ## Prerequisites
 
@@ -41,24 +25,24 @@
 
 ## Setup
 
-1. Clone the repository:
+1. Create a new repository with this template:
 
-   ```bash
-   git https://github.com/AugustoOmena/Backend_ClinicManagement.git
-   cd Backend_ClinicManagement
+   
+![image](https://github.com/user-attachments/assets/22a33fe0-92f2-4d32-b361-160b3c409772)
 
-2. Atualize o `appsettings.json` com sua string de conexão do PostgreSQL:
+
+3. Atualize o `appsettings.json` com sua string de conexão do PostgreSQL:
 
    ```json
    "ConnectionStrings": {
      "DefaultConnection": "Host=localhost;Database=seubanco;Username=seuusuario;Password=suasenha"
    }
 
-3. Execute as migrações do banco de dados:
+4. Execute as migrações do banco de dados:
 
         dotnet ef database update
 
-4. Inicie a API:
+5. Inicie a API:
    
        dotnet run
 
