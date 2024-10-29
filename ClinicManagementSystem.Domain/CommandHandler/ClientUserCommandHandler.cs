@@ -6,6 +6,7 @@ using ClinicManagementSystem.Domain.Results.Auth;
 using ClinicManagementSystem.Domain.Results.UserClient;
 using ClinicManagementSystem.Domain.Services.Contracts;
 using ClinicManagementSystem.Domain.Validators;
+using ClinicManagementSystem.Shared.Constants;
 using ClinicManagementSystem.Shared.Notifications;
 using ClinicManagementSystem.Shared.Persistence;
 using MediatR;
@@ -35,7 +36,7 @@ public class ClientUserCommandHandler : BaseCommandHandler,
 
         if (!validationResult.IsValid)
         {
-            response.Message = "opa, algo não funcionou";
+            response.Message = CommonMessages.ProblemSavindData;
             return response;
         }
 
@@ -50,7 +51,7 @@ public class ClientUserCommandHandler : BaseCommandHandler,
         
         if (!await CommitAsync())
         {
-            Notifications.Handle("CommonMessages.ProblemSavindDataFriendly");
+            Notifications.Handle(CommonMessages.ProblemSavindData);
             return response;
         }
 

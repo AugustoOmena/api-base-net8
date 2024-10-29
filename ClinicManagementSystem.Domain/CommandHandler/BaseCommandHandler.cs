@@ -1,3 +1,4 @@
+using ClinicManagementSystem.Shared.Constants;
 using ClinicManagementSystem.Shared.Notifications;
 using ClinicManagementSystem.Shared.Persistence;
 
@@ -23,7 +24,7 @@ public class BaseCommandHandler
         if (await _uow.SaveChangesAsync() > 0) return true;
 
         if (throwIfFails)
-            Notifications.Handle("CommonMessages.ProblemSavindData");
+            Notifications.Handle(CommonMessages.ProblemSavindData);
 
         return false;
     }
