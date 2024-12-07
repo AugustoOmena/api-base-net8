@@ -8,6 +8,8 @@
 
 This project serves as a template for .NET 8 APIs, following Clean Architecture principles. It comes with a basic authentication and authorization system already in place, providing a robust and scalable structure for developing secure and high-quality APIs. Ideal for projects that require a strong foundation with best practices in design and security.
 
+This project also has the frontend: https://github.com/AugustoOmena/Frontend-api-base-net8
+
 ## Features
 
 - **Layered Architecture**: Clear separation of concerns between layers.
