@@ -10,7 +10,7 @@ public class DesignTimeDbContextFactory : IDesignTimeDbContextFactory<AppDbConte
     {
         var builder = new DbContextOptionsBuilder<AppDbContext>();
 
-        builder.UseNpgsql("Host=localhost; Database=basen.api; Username=postgres; Password=123456");
+        builder.UseSqlite("Data Source=../WebAppBase.Persistence/app.db");
 
         return new AppDbContext(builder.Options);
     }

@@ -1,4 +1,5 @@
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Sqlite;
 using WebAppBase.Domain.Entities;
 
 namespace WebAppBase.Persistence.Context;
@@ -13,8 +14,7 @@ public class AppDbContext : DbContext
     {
         if (!optionsBuilder.IsConfigured)
         {
-            optionsBuilder.UseNpgsql("Host=localhost; Database=basen.api; Username=postgres; Password=123456", 
-                b => b.MigrationsAssembly("WebAppBase.Persistence"));
+            optionsBuilder.UseSqlite("Data Source=app.db", b => b.MigrationsAssembly("WebAppBase.Persistence"));
         }
     }
 }
