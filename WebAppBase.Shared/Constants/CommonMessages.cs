@@ -8,10 +8,12 @@ namespace WebAppBase.Shared.Constants;
         
         public static readonly string InternalServerError = "Internal Server Error";
 
-        public static readonly string UserNotFount = "Usuário não foi encontrado";
+        public static readonly string CreateUserSuccess = "Usuário criado com sucesso";
+       
+        public static readonly string UserNotFound = "Usuário não foi encontrado";
 
-        public static readonly string ProblemSavindData = "Não foi possível salvar os dados no momento";
-        
+        public static readonly string ProblemSavingData = "Não foi possível salvar os dados no momento";
+
         public static readonly string InvalidProfile = "Ação não permitida para o perfil do usuário informado.";
         
         public static readonly string Unauthorized = "Unauthorized";
@@ -21,6 +23,8 @@ namespace WebAppBase.Shared.Constants;
         public static readonly string NotActiveProfile = "O perfil do usuário informado está inativo.";
         
         public static readonly string InvalidRefreshToken = "Sua sessão expirou, por favor faça o login novamente.";
+        
+        public static readonly string UnexpectedError = "Erro inesperado, contate o suporte";
 
         public static string BuiltRequiredMessageError(string propertyName) => $"{propertyName} é requerido";
 

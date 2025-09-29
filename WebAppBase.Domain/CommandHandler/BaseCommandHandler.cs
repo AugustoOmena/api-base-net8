@@ -24,7 +24,7 @@ public class BaseCommandHandler
         if (await _uow.SaveChangesAsync() > 0) return true;
 
         if (throwIfFails)
-            Notifications.Handle(CommonMessages.ProblemSavindData);
+            Notifications.Handle(CommonMessages.ProblemSavingData);
 
         return false;
     }

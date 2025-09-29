@@ -31,56 +31,84 @@ public class ClientUserCommandHandler : BaseCommandHandler,
     {
         var response = new BaseClientUserResult();
         
-        var validator = new CreateClientUserValidator();
-        var validationResult = await validator.ValidateAsync(request);
-
-        if (!validationResult.IsValid)
+        try
         {
-            response.Message = CommonMessages.ProblemSavindData;
+            var validator = new CreateClientUserValidator();
+            var validationResult = await validator.ValidateAsync(request);
+
+            if (!validationResult.IsValid)
+            {
+                response.Success = false;
+                response.Message = CommonMessages.UnprocessableEntity;
+                return response;
+            }
+
+            var newUser = User.New(
+                request.Name,
+                request.Email,
+                request.Password,
+                request.UserType
+            );
+
+            await _userRepository.AddUserAsync(newUser);
+            
+            if (!await CommitAsync())
+            {
+                Notifications.Handle(CommonMessages.ProblemSavingData);
+                response.Success = false;
+                response.Message = CommonMessages.ProblemSavingData;
+                return response;
+            }
+
+            response.Success = true;
+            response.Message = CommonMessages.CreateUserSuccess;
             return response;
         }
-
-        var newUser = User.New(
-            request.Name,
-            request.Email,
-            request.Password,
-            request.UserType
-        );
-
-        await _userRepository.AddUserAsync(newUser);
-        
-        if (!await CommitAsync())
+        catch (Exception)
         {
-            Notifications.Handle(CommonMessages.ProblemSavindData);
+            // Log the exception here if you have logging configured
+            response.Success = false;
+            response.Message = CommonMessages.UnexpectedError;
             return response;
         }
-
-        response.Success = true;
-        return response;
     }
 
     public async Task<AuthorizeUserResult> Handle(AuthorizeUserCommand command, CancellationToken cancellationToken)
     {
         var response = new AuthorizeUserResult();
         
-        var validator = new AuthUserValidator();
-        var validationResult = await validator.ValidateAsync(command);
-        
-        if (!validationResult.IsValid)
+        try
         {
+            var validator = new AuthUserValidator();
+            var validationResult = await validator.ValidateAsync(command);
+            
+            if (!validationResult.IsValid)
+            {
+                response.Success = false;
+                response.Error = CommonMessages.InvalidCredentials;
+                return response;
+            }
+
+            var user = await _userRepository.FindAsync(x => x.Email != null && x.Email.ToLower() == command.Email.ToLower() && x.Password == command.Password);
+
+            if (user is not null)
+            {
+                response.AccessToken = _jwtService.GenerateToken(user);
+                response.Success = true;
+                return response;
+            }
+            
+            // User not found or invalid credentials
             response.Success = false;
+            response.Error = CommonMessages.InvalidCredentials;
             return response;
         }
-
-        var user = await _userRepository.FindAsync(x => x.Email.ToLower() == command.Email.ToLower() && x.Password == command.Password);
-
-        if (user is not null)
+        catch (Exception)
         {
-            response.AccessToken = _jwtService.GenerateToken(user);
-            response.Success = true;
-            return (response);
+            // Log the exception here if you have logging configured
+            response.Success = false;
+            response.Error = CommonMessages.UnexpectedError;
+            return response;
         }
-        
-        throw new NotImplementedException();
     }
 }
