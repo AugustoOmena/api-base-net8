@@ -27,50 +27,50 @@ public class ClientUserCommandHandler : BaseCommandHandler,
         _jwtService = jwtService;
     }
 
-    public async Task<BaseClientUserResult> Handle(CreateClientUserCommand request, CancellationToken cancellationToken)
+    public async Task<BaseClientUserResult> Handle(CreateClientUserCommand command, CancellationToken cancellationToken)
     {
         var response = new BaseClientUserResult();
         
-        try
+        var validator = new CreateClientUserValidator();
+        var validationResult = await validator.ValidateAsync(command);
+
+        if (!validationResult.IsValid)
         {
-            var validator = new CreateClientUserValidator();
-            var validationResult = await validator.ValidateAsync(request);
-
-            if (!validationResult.IsValid)
-            {
-                response.Success = false;
-                response.Message = CommonMessages.UnprocessableEntity;
-                return response;
-            }
-
-            var newUser = User.New(
-                request.Name,
-                request.Email,
-                request.Password,
-                request.UserType
-            );
-
-            await _userRepository.AddUserAsync(newUser);
-            
-            if (!await CommitAsync())
-            {
-                Notifications.Handle(CommonMessages.ProblemSavingData);
-                response.Success = false;
-                response.Message = CommonMessages.ProblemSavingData;
-                return response;
-            }
-
-            response.Success = true;
-            response.Message = CommonMessages.CreateUserSuccess;
-            return response;
-        }
-        catch (Exception)
-        {
-            // Log the exception here if you have logging configured
             response.Success = false;
-            response.Message = CommonMessages.UnexpectedError;
+            response.Message = CommonMessages.UnprocessableEntity;
             return response;
         }
+
+        var newUser = User.New(
+            command.Name,
+            command.Email,
+            command.Password,
+            command.UserType
+        );
+
+        var user = await _userRepository.FindAsync(x => x.Email != null && x.Email.ToLower() == command.Email.ToLower());
+
+        if (user is not null)
+        {
+            response.Success = false;
+            response.Error = CommonMessages.UserAlreadyExists;
+            return response;
+        }
+
+        await _userRepository.AddUserAsync(newUser);
+        
+        if (!await CommitAsync())
+        {
+            Notifications.Handle(CommonMessages.ProblemSavingData);
+            response.Success = false;
+            response.Message = CommonMessages.ProblemSavingData;
+            return response;
+        }
+
+        response.Success = true;
+        response.Message = CommonMessages.CreateUserSuccess;
+        return response;
+
     }
 
     public async Task<AuthorizeUserResult> Handle(AuthorizeUserCommand command, CancellationToken cancellationToken)

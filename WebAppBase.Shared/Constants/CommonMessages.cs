@@ -8,6 +8,8 @@ namespace WebAppBase.Shared.Constants;
         
         public static readonly string InternalServerError = "Internal Server Error";
 
+        public static readonly string UserAlreadyExists = "Usuário já existe";
+
         public static readonly string CreateUserSuccess = "Usuário criado com sucesso";
        
         public static readonly string UserNotFound = "Usuário não foi encontrado";
