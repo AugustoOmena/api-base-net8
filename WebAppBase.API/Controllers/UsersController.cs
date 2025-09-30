@@ -19,7 +19,7 @@ public class UsersController : BaseApiController
 
     [HttpPost]
     [Route("v1/Create")]
-    public async Task<IActionResult> Create(CreateClientUserByClinicManagementSystemCommand command,
+    public async Task<IActionResult> Create(CreateClientUserCommand command,
         CancellationToken cancellationToken)
     {
         return CreateResponse(await _mediator.Send(command, CancellationToken.None));

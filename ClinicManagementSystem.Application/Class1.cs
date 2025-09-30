@@ -1,4 +1,4 @@
-﻿namespace PreciseiChamei.Application;
+﻿namespace WebAppBase.Application;
 
 public class Class1
 {

@@ -1,10 +1,9 @@
-using WebAppBase.Domain.Validators.Requests;
 using FluentValidation;
 using WebAppBase.Domain.Commands.UserClient;
 
 namespace WebAppBase.Domain.Validators;
 
-public sealed class CreateClientUserValidator : AbstractValidator<CreateClientUserByClinicManagementSystemCommand>
+public sealed class CreateClientUserValidator : AbstractValidator<CreateClientUserCommand>
 {
     public CreateClientUserValidator()
     {

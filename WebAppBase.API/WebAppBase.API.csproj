@@ -26,10 +26,6 @@
       <ProjectReference Include="..\WebAppBase.Persistence\WebAppBase.Persistence.csproj" />
     </ItemGroup>
 
-    <ItemGroup>
-      <Compile Remove="Controllers\WeatherForecastController.cs" />
-      <Compile Remove="WeatherForecast.cs" />
-      <Compile Remove="UseCases\CreateUser\CreateUserHandler.cs" />
-    </ItemGroup>
+
 
 </Project>

@@ -1,4 +1,4 @@
-﻿namespace PreciseiChamei.Persistence;
+﻿namespace WebAppBase.Persistence;
 
 public class Class1
 {

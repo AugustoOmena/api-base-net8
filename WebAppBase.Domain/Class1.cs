@@ -1,4 +1,4 @@
-﻿namespace PreciseiChamei.Domain;
+﻿namespace WebAppBase.Domain;
 
 public class Class1
 {

@@ -4,7 +4,7 @@
         <TargetFramework>net8.0</TargetFramework>
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
-        <RootNamespace>ClinicManagementSystem.Application</RootNamespace>
+        <RootNamespace>WebAppBase.Application</RootNamespace>
     </PropertyGroup>
 
     <ItemGroup>

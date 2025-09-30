@@ -14,7 +14,7 @@ using WebAppBase.Domain.Validators;
 namespace WebAppBase.Domain.CommandHandler;
 
 public class ClientUserCommandHandler : BaseCommandHandler,
-    IRequestHandler<CreateClientUserByClinicManagementSystemCommand, BaseClientUserResult>,
+    IRequestHandler<CreateClientUserCommand, BaseClientUserResult>,
     IRequestHandler<AuthorizeUserCommand, AuthorizeUserResult>
 {
 
@@ -27,7 +27,7 @@ public class ClientUserCommandHandler : BaseCommandHandler,
         _jwtService = jwtService;
     }
 
-    public async Task<BaseClientUserResult> Handle(CreateClientUserByClinicManagementSystemCommand request, CancellationToken cancellationToken)
+    public async Task<BaseClientUserResult> Handle(CreateClientUserCommand request, CancellationToken cancellationToken)
     {
         var response = new BaseClientUserResult();
         

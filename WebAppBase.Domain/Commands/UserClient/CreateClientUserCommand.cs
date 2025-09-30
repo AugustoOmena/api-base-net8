@@ -4,7 +4,7 @@ using WebAppBase.Domain.Results.UserClient;
 
 namespace WebAppBase.Domain.Commands.UserClient;
 
-public class CreateClientUserByClinicManagementSystemCommand: IRequest<BaseClientUserResult>
+public class CreateClientUserCommand: IRequest<BaseClientUserResult>
 {
     public string Name { get; set; }
 
