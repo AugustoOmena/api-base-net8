@@ -1,6 +1,7 @@
 using WebAppBase.Shared.Constants;
 using WebAppBase.Shared.Notifications;
 using WebAppBase.Shared.Persistence;
+using WebAppBase.Shared.Security;
 using MediatR;
 using WebAppBase.Domain.Commands.Auth;
 using WebAppBase.Domain.Commands.UserClient;
@@ -20,11 +21,13 @@ public class ClientUserCommandHandler : BaseCommandHandler,
 
     private readonly IUserRepository _userRepository;
     private readonly IJwtService _jwtService;
+    private readonly IPasswordService _passwordService;
     
-    public ClientUserCommandHandler(IUnitOfWork uow, IDomainNotification notifications, IUserRepository userRepository, IJwtService jwtService) : base(uow, notifications)
+    public ClientUserCommandHandler(IUnitOfWork uow, IDomainNotification notifications, IUserRepository userRepository, IJwtService jwtService, IPasswordService passwordService) : base(uow, notifications)
     {
         _userRepository = userRepository;
         _jwtService = jwtService;
+        _passwordService = passwordService;
     }
 
     public async Task<BaseClientUserResult> Handle(CreateClientUserCommand command, CancellationToken cancellationToken)
@@ -41,10 +44,13 @@ public class ClientUserCommandHandler : BaseCommandHandler,
             return response;
         }
 
+        // Hash the password before saving to database
+        var hashedPassword = _passwordService.HashPassword(command.Password);
+        
         var newUser = User.New(
             command.Name,
             command.Email,
-            command.Password,
+            hashedPassword,
             command.UserType
         );
 
@@ -89,9 +95,11 @@ public class ClientUserCommandHandler : BaseCommandHandler,
                 return response;
             }
 
-            var user = await _userRepository.FindAsync(x => x.Email != null && x.Email.ToLower() == command.Email.ToLower() && x.Password == command.Password);
+            // Find user by email only
+            var user = await _userRepository.FindAsync(x => x.Email != null && x.Email.ToLower() == command.Email.ToLower());
 
-            if (user is not null)
+            // Check if user exists and password is correct
+            if (user is not null && _passwordService.VerifyPassword(command.Password, user.Password))
             {
                 response.AccessToken = _jwtService.GenerateToken(user);
                 response.Success = true;
