@@ -6,13 +6,14 @@ using WebAppBase.Persistence.Context;
 using WebAppBase.Persistence.Repositories;
 
 namespace WebAppBase.Persistence;
-
+ 
 public static class ServiceExtensions
 {
     public static void ConfigurePersistenceApp(this IServiceCollection services, IConfiguration configuration)
     {
-        var connectionString = configuration.GetConnectionString(("DefaultConnection"));
-        services.AddDbContext<AppDbContext>(opt => opt.UseNpgsql(connectionString));
+        var connectionString = SqliteConnectionResolver.BuildConnectionString(
+            configuration.GetConnectionString("DefaultConnection"));
+        services.AddDbContext<AppDbContext>(opt => opt.UseSqlite(connectionString));
 
         services.AddScoped<IUnitOfWork, UnitOfWork>();
         services.AddScoped<IUserRepository, UserRepository>();

@@ -13,7 +13,8 @@ public class AppDbContext : DbContext
     {
         if (!optionsBuilder.IsConfigured)
         {
-            optionsBuilder.UseNpgsql("Host=localhost; Database=basen.api; Username=postgres; Password=123456", 
+            var connectionString = SqliteConnectionResolver.BuildConnectionString("Data Source=basen.api.db");
+            optionsBuilder.UseSqlite(connectionString,
                 b => b.MigrationsAssembly("WebAppBase.Persistence"));
         }
     }

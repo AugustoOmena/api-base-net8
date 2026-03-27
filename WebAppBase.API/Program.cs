@@ -12,12 +12,15 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using WebAppBase.Shared.Notifications;
+using WebAppBase.Persistence;
 using WebAppBase.Shared.Persistence;
 
 var builder = WebApplication.CreateBuilder(args);
+var connectionString = SqliteConnectionResolver.BuildConnectionString(
+    builder.Configuration.GetConnectionString("DefaultConnection"));
 
 builder.Services.AddDbContext<DataContext>(options =>
-    options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
+    options.UseSqlite(connectionString));
 
 builder.Services.AddScoped<IJwtService, JwtService>();
 builder.Services.AddScoped<IDomainNotification, DomainNotification>();

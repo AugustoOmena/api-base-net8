@@ -2,56 +2,66 @@
 
 <p align="center">
   <img src="https://img.shields.io/badge/.NET-8.0-blue" alt=".NET">
-  <img src="https://img.shields.io/badge/PostgreSQL-16-blue" alt="PostgreSQL">
+  <img src="https://img.shields.io/badge/SQLite-3-blue" alt="SQLite">
   <img src="https://img.shields.io/badge/Architecture-Layered-orange" alt="Architecture">
 </p>
 
-This project serves as a template for .NET 8 APIs, following Clean Architecture principles. It comes with a basic authentication and authorization system already in place, providing a robust and scalable structure for developing secure and high-quality APIs. Ideal for projects that require a strong foundation with best practices in design and security.
+This project serves as a template for .NET 8 APIs, following Clean Architecture principles. It includes a basic authentication and authorization flow, providing a robust and scalable structure for building secure APIs.
 
-This project also has the frontend: https://github.com/AugustoOmena/Frontend-api-base-net8
+Frontend repository: https://github.com/AugustoOmena/Frontend-api-base-net8
 
 ## Features
 
-- **Layered Architecture**: Clear separation of concerns between layers.
-- **.NET 8.0**: Latest .NET version with performance improvements.
-- **PostgreSQL**: Pre-configured integration with PostgreSQL database.
-- **Extensible**: Easy to extend and adapt for various types of APIs.
-- **Best Practices**: Implements good coding practices like dependency injection and repository pattern.
-
+- **Layered Architecture**: clear separation of concerns between layers.
+- **.NET 8.0**: modern runtime and tooling.
+- **SQLite**: local database for fast setup.
+- **Extensible**: easy to adapt for different API scenarios.
+- **Best Practices**: dependency injection and repository pattern.
 
 ## Prerequisites
 
 - [.NET SDK 8.0](https://dotnet.microsoft.com/download)
-- [PostgreSQL 16](https://www.postgresql.org/download/)
-- [Entity Framework Core](https://docs.microsoft.com/en-us/ef/core/)
+- [Entity Framework Core tools](https://learn.microsoft.com/ef/core/cli/dotnet)
 
-## Setup
+## How to run (current setup with SQLite)
 
-1. Create a new repository with this template:
+1. Restore dependencies:
 
-   
-![image](https://github.com/user-attachments/assets/22a33fe0-92f2-4d32-b361-160b3c409772)
+   ```bash
+   dotnet restore
+   ```
 
-
-3. Atualize o `appsettings.json` com sua string de conexão do PostgreSQL:
+2. Confirm connection string in `WebAppBase.API/appsettings.json`:
 
    ```json
    "ConnectionStrings": {
-     "DefaultConnection": "Host=localhost;Database=seubanco;Username=seuusuario;Password=suasenha"
+     "DefaultConnection": "Data Source=basen.api.db"
    }
+   ```
 
-4. Execute as migrações do banco de dados:
+3. Create/apply migrations (from repository root):
 
-        dotnet ef database update
+   ```bash
+   dotnet ef migrations add InitialSqlite --project WebAppBase.Persistence/WebAppBase.Persistence.csproj --startup-project WebAppBase.API/WebAppBase.API.csproj --context AppDbContext
+   dotnet ef database update --project WebAppBase.Persistence/WebAppBase.Persistence.csproj --startup-project WebAppBase.API/WebAppBase.API.csproj --context AppDbContext
+   ```
 
-5. Inicie a API:
-   
-       dotnet run
+   If a migration already exists, run only `dotnet ef database update`.
+
+4. Start the API:
+
+   ```bash
+   dotnet run --project WebAppBase.API/WebAppBase.API.csproj
+   ```
+
+5. Access:
+
+- Swagger: [http://localhost:5022/swagger](http://localhost:5022/swagger)
+- Root URL (`/`) returns 404 by default in this template.
 
 ## Contact
 
-For inquiries or support, please contact me through the following channels:
+For inquiries or support:
 
 - **Email**: augusto.n.omena@gmail.com
 - **LinkedIn**: [august-omena](https://www.linkedin.com/in/augusto-omena/)
-
